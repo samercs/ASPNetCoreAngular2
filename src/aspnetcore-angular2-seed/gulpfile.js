@@ -1,6 +1,7 @@
 ﻿var gulp = require('gulp'),
     Q = require('q'),
-    rimraf = require('rimraf');
+    rimraf = require('rimraf'),
+    watch = require('gulp-watch');
 
 gulp.task('clean', function (cb) {
     return rimraf('./wwwroot/lib/', cb);
@@ -31,4 +32,13 @@ gulp.task('copy:lib', ['clean'], function () {
     });
 
     return Q.all(promises);
+});
+
+var source = './scripts/app',
+    destination = './wwwroot/app';
+
+gulp.task('watch-folder', function () {
+    gulp.src(source + '/*.html', { base: source })
+      .pipe(watch(source, { base: source }))
+      .pipe(gulp.dest(destination));
 });
